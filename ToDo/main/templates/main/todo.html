@@ -1,0 +1,40 @@
+{% extends 'main/main_layout.html' %}
+{% load static %}
+{% block title  %}
+    The Greatest ToDoList Ever
+{% endblock %}
+{% block header  %}
+<h1>The Greatest ToDoList Ever</h1>
+{% endblock %}
+
+{% block content%}
+    <div class="note_wrapper">
+        <h4>{{title}}</h4>
+        {% if request.user.is_authenticated %}
+        <form method="post">
+            <div class="input_wrapper">
+                {% csrf_token %}
+                {{form.text}}
+                <button class="apply" type = "submit">↵</button>
+            </div>
+        </form>
+        <div class="notes">
+            {% for review in reviews %}
+                    {% if review.is_done %}
+                        <div class = "element" onclick = "location.href = '{% url 'change-task-status' review.id False 0 %}'">
+                            <input type="checkbox" id = '{{review.id}}' checked >
+                            <p id = '{{review.id}}' class = "done">{{review.text}}</p>
+                        </div>
+                    {% else %}
+                        <div class = "element" onclick = "location.href = '{% url 'change-task-status' review.id True 0 %}'">
+                            <input type="checkbox" id = '{{review.id}}'>
+                            <p id = '{{review.id}}' class = "clear">{{review.text}}</p>
+                        </div>
+                    {% endif %}
+
+            {% endfor %}
+        </div>
+        <button class="clean_btn" type = "button" onclick = "location.href = '{% url 'delete' 0 0 %}'">Clean</button>
+        {%endif%}
+    </div>
+{% endblock %}

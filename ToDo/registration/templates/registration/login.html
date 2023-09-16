@@ -1,0 +1,22 @@
+{% extends 'registration/reg_layout.html' %}
+
+{% load static %}
+{% block title  %}
+    Вход
+{% endblock %}
+
+{% block header  %}
+<div>Вход</div>
+{% endblock %}
+
+{%block content%}
+    <span>{{error}}</span>
+    <div class="reg_wrapper" id = "first">
+        {{ form }}
+    </div>
+    <div class="reg_wrapper">
+        <button class = "apply" type="submit">Войти</button>
+        <a href="{% url 'reg' %}">Зарегистрироваться</a>
+    </div>
+
+{%endblock%}

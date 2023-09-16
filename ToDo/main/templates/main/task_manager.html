@@ -1,0 +1,25 @@
+{% extends 'main/main_layout.html' %}
+{% load static %}
+{% block title  %}
+    The Greatest Task Manager Ever
+{% endblock %}
+{% block header  %}
+<h1>The Greatest Task Manager Ever</h1>
+{% endblock %}
+
+{% block content%}
+    <div class="note_wrapper" id = "task_wrapper" >
+
+        {% if request.user.is_authenticated %}
+            <h4>{{title}}</h4>
+            {% for task in tasks%}
+                <div class="task_name" onclick="location.href = '{% url 'int_task' task.id %}'"><a href = "{% url 'int_task' task.id %}">{{task.name}}</a></div>
+            {% endfor %}
+            <div class="add-new-task">
+                <a href = "{% url 'add_task' %}"><i class="fa-regular fa-plus"></i></a>
+            </div>
+        {%else%}
+            <h4>Login or Register to access notes</h4>
+        {%endif%}
+    </div>
+{% endblock %}

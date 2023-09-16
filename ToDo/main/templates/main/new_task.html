@@ -1,0 +1,84 @@
+{% extends 'main/main_layout.html' %}
+{% load static %}
+{% block title  %}
+    Adding Task
+{% endblock %}
+{% block header  %}
+<h1>Adding Task</h1>
+{% endblock %}
+
+{%block content%}
+     <div class="note_wrapper" id = "task_wrapper" >
+         {% if flag == 'start' %}
+            <form method="Post" class = "global_task">
+                <h4>Global Task</h4>
+                {% csrf_token %}
+                {{form1.name}}
+                <button id = "global_task_btn" type = "submit" name = "global_task_btn"><i class="fa-solid fa-check"></i></button>
+            </form>
+         {%elif  flag == 'inter' %}
+            <div class = "global_task">
+                <h4>Global Task </h4>
+                {% if form1.tasks_count <= 0%}
+                    <h4 style = "color:#337f4d">{{form1.name}}</h4>
+                {% else %}
+                    <h4 style = "color:#778899">{{form1.name}}</h4>
+                {%endif%}
+                <button id = "global_task_btn" onclick="location.href = '{% url 'edit_task' id %}'"><i class="fa-solid fa-pencil"></i></button>
+            </div>
+         {%elif  flag == 'edit' %}
+            <form method="Post" class = "global_task">
+                <h4>Global Task</h4>
+                {% csrf_token %}
+                {{form1.name}}
+                <button id = "global_task_btn" type = "submit" name = "global_task_btn"><i class="fa-solid fa-check"></i></button>
+            </form>
+            {{error}}
+            <button class="add-new-task-1" onclick="location.href = '{% url 'int_task' id %}'"><i class="fa-solid fa-arrow-left"></i></i></button>
+         {%endif%}
+         {%if  flag != 'edit' %}
+            <form class="inter_task" method="Post">
+
+                {% csrf_token %}
+                {{form2.task_text}}
+                <button class="add-new-task" id = "inter_task_btn" type = "submit" name = "btn1"><i class="fa-regular fa-plus"></i></button>
+            </form>
+         <div class = "inter_task_element">
+             {% for inter_task in inter_tasks %}
+                {% if inter_task.is_done %}
+                    <div class = "element_wrapper">
+                         <div class = "element" onclick = "location.href = '{% url 'change-task-status' inter_task.id False 1 %}'">
+                            <input type="checkbox" id = '{{inter_task.id}}' checked >
+                             <p id = '{{inter_task.id}}' class = "done">{{inter_task.task_text}}</p>
+                        </div>
+
+                        <button class = "delete_inter_task" onclick="location.href = '{% url 'delete' 1 inter_task.id %}'"><i class="fa-solid fa-x"></i></button>
+                    </div>
+
+                {% else %}
+                    <div class = "element_wrapper">
+                        <div class = "element" onclick = "location.href = '{% url 'change-task-status' inter_task.id True 1 %}'">
+                            <input type="checkbox" id = '{{inter_task.id}}'>
+                            <p id = '{{inter_task.id}}' class = "clear">{{inter_task.task_text}}</p>
+                        </div>
+
+                        <button  onclick="location.href = '{% url 'delete' 1 inter_task.id %}'"><i class="fa-solid fa-x"></i></button>
+                    </div>
+             {% endif %}
+            {%endfor%}
+         </div>
+            <div class="global_button_wrapper">
+                <button class="add-new-task-1" onclick="location.href = '{% url 'manager' %}'"><i class="fa-solid fa-check"></i></button>
+                {%if flag != 'start'%}
+                    <button class="add-new-task-1" onclick="location.href = '{% url 'delete' 2 form1.id %}'">Delete</button>
+                {% endif %}
+            </div>
+
+
+            {{error}}
+         {%endif%}
+
+
+    </div>
+
+{% endblock %}
